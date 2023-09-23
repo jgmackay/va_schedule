@@ -30,17 +30,17 @@ jobs:
         run: |
          python3 get_sheet_data.py 
 
-      - name: Commit files
-        run: |
-         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-         git config --local user.name "github-actions[bot]"
-         git commit -a -m "Add changes"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
-         branch: ${{ github.ref }}
+      - name: push
+	uses: github-actions-x/commit@v2.9
+	with:
+	 github-token: ${{ secrets.GITHUB_TOKEN }}
+	 push-branch: 'master'
+	 commit-message: 'publish'
+	 force-add: 'true'
+	 files: spreadsheet_data.json spreadsheet_data.html 
+	 name: John MacKay (Bot) 
+	 email: john.g.mackay@gmail.com 
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
