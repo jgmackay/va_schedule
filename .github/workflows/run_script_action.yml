@@ -1,7 +1,9 @@
 name: Regenerate HTML/JSON Data 
 run-name: ${{ github.actor }} is updating google sheets data 
-on: [push]
-jobs:
+on:
+  schedule:
+      - cron: "* * * * *" 
+  jobs:
   Regen_Google_Sheets_Data:
     runs-on: ubuntu-latest
     steps:
