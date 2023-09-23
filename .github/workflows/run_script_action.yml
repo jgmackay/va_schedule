@@ -2,7 +2,7 @@ name: Regenerate HTML/JSON Data
 run-name: ${{ github.actor }} is updating google sheets data 
 on:
   schedule:
-  - cron: "* * * * *" 
+  - cron: "*/1 * * * *" 
 
 jobs:
   Regen_Google_Sheets_Data:
