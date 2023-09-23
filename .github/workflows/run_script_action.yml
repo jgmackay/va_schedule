@@ -38,9 +38,8 @@ jobs:
 	 push-branch: 'master'
 	 commit-message: 'publish'
 	 force-add: 'true'
-	 files: spreadsheet_data.json spreadsheet_data.html 
-	 name: John MacKay (Bot) 
+	 files: spreadsheet_data.json spreadsheet_data.html
+	 name: John MacKay (Bot)
 	 email: john.g.mackay@gmail.com 
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
-
