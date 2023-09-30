@@ -15,9 +15,16 @@ from googleapiclient.errors import HttpError
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 # The ID and range of a sample spreadsheet.
-#SAMPLE_SPREADSHEET_ID = '1bM65IR2kNCIz0u9CR56V_GO4UbFtdmkYPhQvf05PLqI' 
-SAMPLE_SPREADSHEET_ID = '1Ve7LHUipFhjDwQzRRK_Qa-jDiBW7lpBKsI9ZAtGiwwA'
-SAMPLE_RANGE_NAME = 'Fall \'23!A1:H'
+#SPREADSHEET_ID = '1bM65IR2kNCIz0u9CR56V_GO4UbFtdmkYPhQvf05PLqI' 
+SPREADSHEET_ID = '1Ve7LHUipFhjDwQzRRK_Qa-jDiBW7lpBKsI9ZAtGiwwA'
+SHEET_NAMES_AND_RANGE = [ 
+        ('Fall \'23', '!A1:H'),
+        ('Didactics', '!A1:J'),
+        ('Clinic Names', '!A1:X'),
+        ('NewPt Clinic', '!A1:M'),
+        ('Weds Resdt Amb Talks', '!A1:N'),
+        ('Spring \'24', '!A1:J')
+                        ]
 
 
 def main():
@@ -30,25 +37,31 @@ def main():
             'credentials.json', scopes=SCOPES)
         service = build('sheets', 'v4', credentials=creds)
 
-        # Call the Sheets API
-        sheet = service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                    range=SAMPLE_RANGE_NAME).execute()
-        values = result.get('values', [])
-        df = pd.DataFrame(values)
+        # Loop over each sheet in the spreadsheet
+        for name_and_range in SHEET_NAMES_AND_RANGE:
+            name = name_and_range[0]
+            rng = name_and_range[1]
+
+            # Call the Sheets API
+            sheet = service.spreadsheets()
+            result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+                                        range=(name+rng)).execute()
+            values = result.get('values', [])
+            df = pd.DataFrame(values)
 
 
-        # Write out to HTML
-        html_file = open("spreadsheet_data.html", "w")
-        html_file.writelines(df.to_html())
-        html_file.close()
-        print("Successfully wrote output to spreadsheet_data.html")
+            # Write out to HTML
+            filename = name.replace(' ', '_')
+            html_file = open(filename+".html", "w")
+            html_file.writelines(df.to_html())
+            html_file.close()
+            print("Successfully wrote output to "+filename+".html")
 
-        # Write out to JSON
-        json_file = open("spreadsheet_data.json", "w")
-        json_file.writelines(df.to_json())
-        json_file.close()
-        print("Successfully wrote output to spreadsheet_data.json")
+            # Write out to JSON
+            json_file = open(filename+".json", "w")
+            json_file.writelines(df.to_json())
+            json_file.close()
+            print("Successfully wrote output to "+filename+".json")
 
         #if not values:
         #    print('No data found.')
