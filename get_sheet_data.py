@@ -52,16 +52,16 @@ def main():
 
             # Write out to HTML
             filename = name.replace(' ', '_')
-            html_file = open(filename+".html", "w")
+            html_file = open("html/"+filename+".html", "w")
             html_file.writelines(df.to_html())
             html_file.close()
-            print("Successfully wrote output to "+filename+".html")
+            print("Successfully wrote output to html/"+filename+".html")
 
             # Write out to JSON
-            json_file = open(filename+".json", "w")
+            json_file = open("json/"+filename+".json", "w")
             json_file.writelines(df.to_json())
             json_file.close()
-            print("Successfully wrote output to "+filename+".json")
+            print("Successfully wrote output to json/"+filename+".json")
 
         #if not values:
         #    print('No data found.')
